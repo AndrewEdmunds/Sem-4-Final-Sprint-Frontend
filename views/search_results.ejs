@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="search-results.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-items">
+                <div class="welcome-message">
+                    <% if (currentUser) { %>
+                        Welcome, <%= currentUser %>!
+                    <% } %>
+                </div>
+                <div class="nav-buttons">
+                    <% if (currentUser) { %>
+                        <a href="/auth/logout">Logout</a>
+                    <% } %>
+                    <a href="/landing">Back to Search</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <h1 class="search-title">Search Results</h1>
+    <ul class="search-results-list">
+        <% recipes.forEach(recipe => { %>
+            <li class="search-result">
+                <p class="recipe-info">Database: <%= recipe.datbase %>
+                <h2 class="recipe-title"><%= recipe.title %></h2>
+                <p class="recipe-info">Ingredients: <%= recipe.ingredients %></p>
+                <p class="recipe-info">Instructions: <%= recipe.instructions %></p>
+                <p class="recipe-info">Prep Time: <%= recipe.prep_time %></p>
+                <p class="recipe-info">Cook Time: <%= recipe.cook_time %></p>
+                <p class="recipe-info">Total Time: <%= recipe.total_time %></p>
+                <p class="recipe-info">Servings: <%= recipe.servings %></p>
+                <img class="recipe-image" src="<%= recipe.image_url %>" alt="Recipe Image" width="200">
+            </li>
+        <% }); %>
+    </ul>
+
+    <footer>
+        &copy; 2023 Recipe Search Engine
+    </footer>
+</body>
+</html>
+
+
+

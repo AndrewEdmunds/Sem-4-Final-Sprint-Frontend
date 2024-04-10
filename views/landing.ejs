@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Search Engine</title>
+    <link rel="stylesheet" href="/landing.css">
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-content">
+            <% if (currentUser) { %>
+                <p class="welcome-message">Welcome, <%= currentUser %>!</p>
+                <a href="/auth/logout" class="signout-button">Sign Out</a>
+            <% } else { %>
+                <p id="loginNeeded">Please <a href="/auth/login">Log In</a></p>
+            <% } %>
+        </div>
+    </nav>
+    <main class="container">
+        <div class="container">
+            <% if (currentUser) { %>
+                <h1 class="main-title">Recipe Search Engine</h1>
+                <form action="/search" method="GET" class="search-form">
+                    <input type="text" name="query" placeholder="Search for recipes" class="search-input">
+                    <select name="database" class="search-select">
+                        <option value="mongo">MongoDB</option>
+                        <option value="postgre">PostgreSQL</option>
+                        <option value="both">Both</option>
+                    </select>
+                    <select name="searchType" class="search-select">
+                        <option value="exact">Exact Search</option>
+                        <option value="keyword">Keyword Search</option>
+                    </select>
+                    <button type="submit" class="search-button">Search</button>
+                </form>
+            <% } else { %>
+            <% } %>
+        </div>
+    </main>
+    <footer>
+        &copy; 2023 Recipe Search Engine
+    </footer>
+</body>
+</html>
+
+
+
+
+
+

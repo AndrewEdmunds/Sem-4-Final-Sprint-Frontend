@@ -1,0 +1,127 @@
+body, h1, h2, p, ul, li, form, a {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+.nav-container {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 7vh;
+}
+
+.nav-content {
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-content a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-content a:hover {
+    background-color: #0056b3;
+}
+
+.main-title {
+    text-align: center;
+    margin: 5vh 0;
+}
+
+.search-form {
+    text-align: center;
+    margin-bottom: 5vh;
+}
+
+.search-input,
+.search-select {
+    width: 80%;
+    padding: 2vh;
+    margin-bottom: 2vh;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.search-button {
+    width: 80%;
+    padding: 2vh;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 2vh 5vw;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    min-height: calc(100vh - 40vh);
+    width: 80%;
+}
+
+.options-list {
+    flex: 1;
+    padding: 2vh;
+    border-right: 1px solid #ccc;
+    width: 48%;
+}
+
+.recipe-option {
+    display: block;
+    margin-bottom: 1vh;
+}
+
+.container p {
+    text-align: center;
+}
+
+#loginNeeded {
+    -webkit-text-fill-color: rgb(255, 255, 255);
+    margin-left: 350px;
+}
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    width: 100%; 
+    position: fixed; 
+    bottom: 0; 
+}
+
+
+
+
+
+

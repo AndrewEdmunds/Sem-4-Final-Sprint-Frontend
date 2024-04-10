@@ -1,0 +1,23 @@
+{
+  "name": "fullstact_finalsprint",
+  "version": "1.0.0",
+  "description": "My Final Sprint project for semester 3",
+  "main": "\\",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew Edmunds",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "bcrypt": "^5.1.0",
+    "connect-flash": "^0.1.1",
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
+    "mongodb": "^5.7.0",
+    "pg": "^8.11.2"
+  }
+}
