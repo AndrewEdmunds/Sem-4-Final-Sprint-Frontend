@@ -7,14 +7,7 @@
     <link rel="stylesheet" href="/login.css">
 </head>
 <body>
-    <nav>
-        <% if (currentUser) { %>
-            <p>Welcome, <%= currentUser %>!</p>
-            <a href="logout">Logout</a>
-        <% } else { %>
-            <a href="signup">Sign Up</a>
-        <% } %>
-    </nav>
+
     <div class="login-container">
     <h1 class="login-title">Log In</h1>
     <form id="login-form" class="login-form" method="POST">
@@ -57,9 +50,24 @@
                     // Store token and user information in local storage
                     localStorage.setItem('token', responseData.token);
                     localStorage.setItem('user', JSON.stringify(responseData.user));
+    
+                    // Fetch user information separately using the token
+                    const userResponse = await fetch('http://localhost:8080/api/auth/status', {
+                        headers: {
+                            'Authorization': `Bearer ${responseData.token}`
+                        }
+                    });
+    
+                    if (userResponse.ok) {
+                        const userData = await userResponse.json();
+                        localStorage.setItem('currentUser', JSON.stringify(userData.username));
+                    } else {
+                        console.error('Failed to fetch user information:', userResponse.statusText);
+                        alert('Failed to fetch user information. Please try again.');
+                    }
         
                     // Redirect to landing page
-                    window.location.href = '/landing';
+                    window.location.href = `/landing?currentUser=${JSON.stringify(responseData.user.username)}`;
                 } else {
                     // Handle login error
                     console.error('Login failed:', response.statusText);
@@ -71,32 +79,6 @@
                 alert('An error occurred during login. Please try again later.');
             }
         });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', async function() {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    try {
-                        const response = await fetch('http://localhost:8080/api/auth/status', {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        });
-        
-                        if (response.ok) {
-                            const userData = await response.json();
-                            localStorage.setItem('currentUser', JSON.stringify(userData));
-                        } else {
-                            window.location.href = '/login';
-                        }
-                    } catch (error) {
-                        console.error('Error verifying authentication status:', error);
-                        window.location.href = '/login';
-                    }
-                } else {
-                    window.location.href = '/login';
-                }
-            });
-        </script>
+    </script>
 </body>
 </html>

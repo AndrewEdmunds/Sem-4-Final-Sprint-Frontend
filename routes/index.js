@@ -8,7 +8,9 @@ router.get('/', (req, res) => {
 });
 // main page
 router.get('/landing', (req, res) => {
-  res.render('landing', {currentUser: req.user })
+
+  const currentUser = req.query.currentUser ? JSON.parse(req.query.currentUser) : null;
+  res.render('landing', { currentUser });
 });
 
 module.exports = router;

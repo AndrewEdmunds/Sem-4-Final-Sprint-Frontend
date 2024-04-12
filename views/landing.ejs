@@ -10,8 +10,8 @@
     <nav class="nav-container">
         <div class="nav-content">
             <% if (currentUser) { %>
-                <p class="welcome-message">Welcome, <%= currentUser.username %>!</p>
-                <a href="/auth/logout" class="signout-button">Sign Out</a>
+                <p class="welcome-message">Welcome, <%= currentUser %>!</p>
+                <button id="signout-button" class="signout-button">Sign Out</Button>
             <% } else { %>
                 <p id="loginNeeded">Please <a href="/login">Log In</a></p>
             <% } %>
@@ -41,38 +41,38 @@
     <footer>
         &copy; 2023 Recipe Search Engine
     </footer>
-
-    <!-- Script to access current user information -->
-    <script>
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Check if user token exists in local storage
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    // Send request to backend to verify authentication status
-                    const response = await fetch('http://localhost:8080/api/auth/status', {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-
-                    if (response.ok) {
-                        const userData = await response.json();
-                        // Display user information on the landing page
-                        console.log('Authenticated user:', userData);
-                    } else {
-                        // User not authenticated, redirect to login page
-                        window.location.href = '/login';
-                    }
-                } catch (error) {
-                    console.error('Error verifying authentication status:', error);
-                    // Handle error
-                }
-            } else {
-                // No user token found, redirect to login page
-                window.location.href = '/login';
-            }
-        });
-    </script>
 </body>
+<!-- Script to destroy session -->
+<script>
+    document.getElementById('signout-button').addEventListener('click', async function(event) {
+        try {
+            const token = localStorage.getItem('token'); // Get the token from local storage
+    
+            // Send a request to the logout endpoint
+            const response = await fetch('http://localhost:8080/api/auth/logout', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}` // Include the token in the request headers
+                }
+            });
+    
+            if (response.ok) {
+                // If logout is successful, remove token and user data from local storage
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+    
+                // Redirect to the login page or any other page as needed
+                window.location.href = '/login';
+            } else {
+                // Handle logout error
+                console.error('Logout failed:', response.statusText);
+                alert('Logout failed. Please try again.');
+            }
+        } catch (error) {
+            // Handle other errors
+            console.error('Error during logout:', error);
+            alert('An error occurred during logout. Please try again later.');
+        }
+    });
+    </script>
 </html>
