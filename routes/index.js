@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 });
 // main page
 router.get('/landing', (req, res) => {
-  res.render('landing', {currentUser: res.locals.currentUser})
+  res.render('landing', {currentUser: req.user })
 });
 
 module.exports = router;

@@ -10,31 +10,93 @@
     <nav>
         <% if (currentUser) { %>
             <p>Welcome, <%= currentUser %>!</p>
-            <a href="/auth/logout">Logout</a>
+            <a href="logout">Logout</a>
         <% } else { %>
-            <a href="/auth/signup">Sign Up</a>
+            <a href="signup">Sign Up</a>
         <% } %>
     </nav>
     <div class="login-container">
-        <h1 class="login-title">Log In</h1>
-
-        <% if (errorMessage) { %>
-            <div class="error-message"><%= errorMessage %></div>
-        <% } %>
-
-        <% if (successMessage) { %>
-            <div class="success-message"><%= successMessage %></div>
-        <% } %>
-
-        <form action="/auth/login" method="POST" class="login-form">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" class="login-button">Log In</button>
-        </form>
+    <h1 class="login-title">Log In</h1>
+    <form id="login-form" class="login-form" method="POST">
+        <input type="text" name="username" id="username" placeholder="Username" required>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+        <button type="submit" class="login-button">Log In</button>
+    </form>
     </div>
+    <% if (errorMessage) { %>
+        <div class="message error-message"><%= errorMessage %></div>
+    <% } else if (successMessage) { %>
+        <div class="message success-message"><%= successMessage %></div>
+    <% } %>
+    <p class="signup-link">Don't have an account? <a href="/signup">Sign up here</a></p>
     <footer>
         &copy; 2023 Recipe Search Engine
     </footer>
+    
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+        
+            const formData = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            };
+        
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+        
+                if (response.ok) {
+                    const responseData = await response.json();
+        
+                    // Store token and user information in local storage
+                    localStorage.setItem('token', responseData.token);
+                    localStorage.setItem('user', JSON.stringify(responseData.user));
+        
+                    // Redirect to landing page
+                    window.location.href = '/landing';
+                } else {
+                    // Handle login error
+                    console.error('Login failed:', response.statusText);
+                    alert('Login failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+                // Handle other errors
+                alert('An error occurred during login. Please try again later.');
+            }
+        });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', async function() {
+                const token = localStorage.getItem('token');
+                if (token) {
+                    try {
+                        const response = await fetch('http://localhost:8080/api/auth/status', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+        
+                        if (response.ok) {
+                            const userData = await response.json();
+                            localStorage.setItem('currentUser', JSON.stringify(userData));
+                        } else {
+                            window.location.href = '/login';
+                        }
+                    } catch (error) {
+                        console.error('Error verifying authentication status:', error);
+                        window.location.href = '/login';
+                    }
+                } else {
+                    window.location.href = '/login';
+                }
+            });
+        </script>
 </body>
 </html>
-

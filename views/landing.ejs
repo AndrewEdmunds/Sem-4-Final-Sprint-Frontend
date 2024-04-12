@@ -10,10 +10,10 @@
     <nav class="nav-container">
         <div class="nav-content">
             <% if (currentUser) { %>
-                <p class="welcome-message">Welcome, <%= currentUser %>!</p>
+                <p class="welcome-message">Welcome, <%= currentUser.username %>!</p>
                 <a href="/auth/logout" class="signout-button">Sign Out</a>
             <% } else { %>
-                <p id="loginNeeded">Please <a href="/auth/login">Log In</a></p>
+                <p id="loginNeeded">Please <a href="/login">Log In</a></p>
             <% } %>
         </div>
     </nav>
@@ -41,11 +41,38 @@
     <footer>
         &copy; 2023 Recipe Search Engine
     </footer>
+
+    <!-- Script to access current user information -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check if user token exists in local storage
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    // Send request to backend to verify authentication status
+                    const response = await fetch('http://localhost:8080/api/auth/status', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const userData = await response.json();
+                        // Display user information on the landing page
+                        console.log('Authenticated user:', userData);
+                    } else {
+                        // User not authenticated, redirect to login page
+                        window.location.href = '/login';
+                    }
+                } catch (error) {
+                    console.error('Error verifying authentication status:', error);
+                    // Handle error
+                }
+            } else {
+                // No user token found, redirect to login page
+                window.location.href = '/login';
+            }
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-
-

@@ -26,7 +26,7 @@
     <% } else if (successMessage) { %>
         <div class="message success-message"><%= successMessage %></div>
     <% } %>
-    <p class="login-link">Already have an account? <a href="/auth/login">Log in here</a></p>
+    <p class="login-link">Already have an account? <a href="/login">Log in here</a></p>
     <footer>
         &copy; 2023 Recipe Search Engine
     </footer>
@@ -50,13 +50,23 @@
     
             if (response.ok) {
               const responseData = await response.text();
+              const successDiv = document.createElement('div');
+
+              successDiv.classList.add('message', 'success-message');
+              successDiv.textContent = 'User signed up successfully. Redirecting to login page...';
+
+              document.body.appendChild(successDiv);
+
+              setTimeout(() => {
+                window.location.href = '/login';
+              }, 2000);
               // Handle successful signup (e.g., display success message)
               console.log(responseData);
             } else {
-              const errorData = await response.json();
-              // Handle signup error (e.g., display error message)
-              console.error(errorData);
-            }
+    const responseData = await response.text();
+    document.querySelector('.error-message').innerHTML = responseData;
+    console.error(responseData);
+}
           } catch (error) {
             console.error('Error during signup:', error);
             // Handle other errors (e.g., network error)

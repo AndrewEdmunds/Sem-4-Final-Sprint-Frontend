@@ -93,5 +93,33 @@ footer {
     position: fixed; 
     bottom: 0; 
 }
+.signup-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.signup-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+.success-message {
+    text-align: center;
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px;
+    margin-top: 20px;
+}
+.error-message {
+    text-align: center;
+    color: #000000;
+    padding: 10px; 
+    margin-top: 20px;
+}
+
+
 
 
