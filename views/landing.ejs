@@ -21,19 +21,18 @@
         <div class="container">
             <% if (currentUser) { %>
                 <h1 class="main-title">Recipe Search Engine</h1>
-                <form action="/search" method="GET" class="search-form">
+                <form id="search-form" class="search-form">
                     <input type="text" name="query" placeholder="Search for recipes" class="search-input">
                     <select name="database" class="search-select">
-                        <option value="mongo">MongoDB</option>
                         <option value="postgre">PostgreSQL</option>
-                        <option value="both">Both</option>
                     </select>
                     <select name="searchType" class="search-select">
-                        <option value="exact">Exact Search</option>
                         <option value="keyword">Keyword Search</option>
+                        <option value="exact">Exact Search</option>
                     </select>
                     <button type="submit" class="search-button">Search</button>
                 </form>
+                <h2 class="main-title">If you would like to access all our recipes, simply select "Keyword Search" and press Search!</h2>
             <% } else { %>
             <% } %>
         </div>
@@ -42,6 +41,44 @@
         &copy; 2023 Recipe Search Engine
     </footer>
 </body>
+<!-- Script to run GET on api -->
+<script>
+document.getElementById('search-form').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const query = document.querySelector('input[name="query"]').value;
+    const database = document.querySelector('select[name="database"]').value;
+    const searchType = document.querySelector('select[name="searchType"]').value;
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const userId = userData.id;
+
+    const url = `http://localhost:8080/api/search?query=${query}&database=${database}&searchType=${searchType}&userId=${userId}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            // Handle successful response (display data on the frontend)
+            console.log(data);
+            localStorage.setItem('recipes', JSON.stringify(data));
+            // Example: redirect to search_results.html passing the search results data
+            window.location.href = `/search?query=${query}&database=${database}&searchType=${searchType}&userId=${userId}}`;
+        } else {
+            // Handle error response
+            console.error('Error:', response.statusText);
+        }
+    } catch (error) {
+        // Handle other errors
+        console.error('Error:', error);
+    }
+});
+</script>
 <!-- Script to destroy session -->
 <script>
     document.getElementById('signout-button').addEventListener('click', async function(event) {
@@ -61,8 +98,8 @@
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
     
-                // Redirect to the login page or any other page as needed
-                window.location.href = '/login';
+                // Redirect to the logout page
+                window.location.href = '/logout';
             } else {
                 // Handle logout error
                 console.error('Logout failed:', response.statusText);

@@ -51,7 +51,7 @@
                     localStorage.setItem('token', responseData.token);
                     localStorage.setItem('user', JSON.stringify(responseData.user));
     
-                    // Fetch user information separately using the token
+                    // Fetch user information using the token
                     const userResponse = await fetch('http://localhost:8080/api/auth/status', {
                         headers: {
                             'Authorization': `Bearer ${responseData.token}`

@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
 router.get('/landing', (req, res) => {
 
   const currentUser = req.query.currentUser ? JSON.parse(req.query.currentUser) : null;
+  
   res.render('landing', { currentUser });
 });
 

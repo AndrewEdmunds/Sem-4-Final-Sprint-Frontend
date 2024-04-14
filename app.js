@@ -1,7 +1,6 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const setCurrentUser = require('./authMiddleware');
 const app = express();
 const path = require('path');
 

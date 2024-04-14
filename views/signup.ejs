@@ -8,11 +8,6 @@
 </head>
 <body>
     <nav>
-        <% if (currentUser) { %>
-            <p class="welcome-message">Welcome, <%= currentUser %>!</p>
-            <a href="/auth/logout" class="logout-link">Logout</a>
-        <% } else { %>
-        <% } %>
     </nav>
     <h1 class="signup-title">Sign Up</h1>
     <form id="signup-form" class="signup-form" method="POST">

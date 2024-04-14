@@ -11,15 +11,21 @@
         <div class="container">
             <div class="nav-items">
                 <div class="welcome-message">
-                    <% if (currentUser) { %>
-                        Welcome, <%= currentUser %>!
-                    <% } %>
+                    <script>
+                        // Retrieve user data from local storage
+                        const userData = JSON.parse(localStorage.getItem('user'));
+                        if (userData && userData.username) {
+                            document.write("Welcome, " + userData.username + "!");
+                        }
+                    </script>
                 </div>
                 <div class="nav-buttons">
-                    <% if (currentUser) { %>
-                        <a href="/auth/logout">Logout</a>
-                    <% } %>
-                    <a href="/landing">Back to Search</a>
+                    <script>
+                        // Retrieve user data from local storage and construct URL for "Back to Search" link
+                        if (userData && userData.username) {
+                            document.write('<a href="/landing?currentUser=&quot;' + userData.username + '&quot;">Back to Search</a>');
+                        }
+                    </script>
                 </div>
             </div>
         </div>
@@ -27,26 +33,44 @@
 
     <h1 class="search-title">Search Results</h1>
     <ul class="search-results-list">
-        <% recipes.forEach(recipe => { %>
-            <li class="search-result">
-                <p class="recipe-info">Database: <%= recipe.datbase %>
-                <h2 class="recipe-title"><%= recipe.title %></h2>
-                <p class="recipe-info">Ingredients: <%= recipe.ingredients %></p>
-                <p class="recipe-info">Instructions: <%= recipe.instructions %></p>
-                <p class="recipe-info">Prep Time: <%= recipe.prep_time %></p>
-                <p class="recipe-info">Cook Time: <%= recipe.cook_time %></p>
-                <p class="recipe-info">Total Time: <%= recipe.total_time %></p>
-                <p class="recipe-info">Servings: <%= recipe.servings %></p>
-                <img class="recipe-image" src="<%= recipe.image_url %>" alt="Recipe Image" width="200">
-            </li>
-        <% }); %>
+        <!-- JavaScript to dynamically populate recipe data -->
     </ul>
 
     <footer>
         &copy; 2023 Recipe Search Engine
     </footer>
+    <script>
+        // Retrieve recipes from localStorage
+        const recipes = JSON.parse(localStorage.getItem('recipes'));
+
+        // Check if recipes exist and display them
+        const searchResultsList = document.querySelector('.search-results-list');
+        if (recipes && recipes.length > 0) {
+            recipes.forEach(recipe => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('search-result');
+                listItem.innerHTML = `
+                    <p class="recipe-info">Database: ${recipe.database}</p>
+                    <h2 class="recipe-title">${recipe.title}</h2>
+                    <p class="recipe-info">Ingredients: ${recipe.ingredients}</p>
+                    <p class="recipe-info">Instructions: ${recipe.instructions}</p>
+                    <p class="recipe-info">Prep Time: ${recipe.prepTime}</p>
+                    <p class="recipe-info">Cook Time: ${recipe.cookTime}</p>
+                    <p class="recipe-info">Total Time: ${recipe.totalTime}</p>
+                    <p class="recipe-info">Servings: ${recipe.servings}</p>
+                    <img class="recipe-image" src="${recipe.imageUrl}" alt="Recipe Image" width="200">
+                `;
+                searchResultsList.appendChild(listItem);
+            });
+        } else {
+            // Handle case when recipes are not available
+            const noResultsMessage = document.createElement('p');
+            noResultsMessage.textContent = 'No recipes found.';
+            searchResultsList.appendChild(noResultsMessage);
+        }
+
+        // Optionally, clear recipes from localStorage after use
+        localStorage.removeItem('recipes');
+    </script>
 </body>
 </html>
-
-
-

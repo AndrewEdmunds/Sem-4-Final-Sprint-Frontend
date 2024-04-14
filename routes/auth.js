@@ -12,4 +12,8 @@ router.get('/login', (req, res) => {
   res.render('login', { errorMessage: req.flash('error'), successMessage: req.flash('success') });
 });
 
+router.get('/logout', (req, res) => {
+  res.render('logout', { errorMessage: req.flash('error'), successMessage: req.flash('success') });
+});
+
 module.exports = router;
